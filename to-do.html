@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to-do app</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@1,200&display=swap" rel="stylesheet">
+    <style>
+        * {
+            align-items: center;
+            text-align: center;
+        }
+
+        .container {
+            box-sizing: border-box;
+            border: 1em solid rgba(248, 248, 251, 0.966);
+            background-image: linear-gradient(to bottom right,
+                    rgba(19, 11, 99, 0.966),
+                    rgba(229, 227, 241, 0.792));
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        }
+
+        .add {
+            align-items: center;
+            float: inline-start;
+            width: 80%;
+            margin: 2% 15% 1% 10%;
+        }
+
+        #todoInput {
+            width: 50%;
+            height: 2em;
+            margin: 2% 20% 1% 25%;
+            border: 2px solid black;
+            overflow: auto;
+            float: inline-start;
+
+        }
+
+        .add button {
+            width: 10%;
+            height: 2.1em;
+            margin: 0 45% 0 45%;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        .todolist {
+            box-sizing: border-box;
+            border: 1em solid rgba(248, 248, 251, 0.966);
+            float: left;
+            padding: .5em;
+            width: 50%;
+            height: 20em;
+            background-image: linear-gradient(to bottom left, rgb(242, 239, 239), rgb(146, 138, 141));
+            font-size: large;
+            font-family: 'Bitter';
+            overflow: auto;
+
+
+        }
+
+        .completed-list {
+            box-sizing: border-box;
+            border: 1em solid rgba(248, 248, 251, 0.966);
+            float: right;
+            padding: .5em;
+            width: 50%;
+            height: 20em;
+            background-image: linear-gradient(to bottom left, rgb(242, 239, 239), rgb(146, 138, 141));
+            font-size: large;
+            font-family: 'Bitter';
+            overflow: auto;
+        }
+
+        #completedList,
+        #todoList {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 1.3em;
+            justify-content: space-between;
+            float: left;
+            padding: 0em .5em;
+        }
+
+         #completedList button,
+        #todoList button {
+            width: 4em;
+            height: 2em;
+            margin: 0 45% 0 45%;
+        } 
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <div class="add">
+            <input type="text" id="todoInput" placeholder="Enter a task...">
+            <button onclick="addTasks()">Add</button>
+        </div>
+        <br>
+
+        <div class="todolist">
+
+            <h2>New Tasks</h2>
+            <div id="todoList">
+            </div>
+
+        </div>
+
+        <div class="completed-list">
+            <h2>Completed Tasks</h2>
+            <div id="completedList"></div>
+        </div>
+    </div>
+
+    </div>
+    <script>
+        function addTasks() {
+            var input = document.getElementById("todoInput");
+            var task = input.value;
+            if (task === "") {
+                alert("Please enter a task.");
+                return;
+            }
+
+            var listItem = document.createElement("div");
+            listItem.className = "todo-item";
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", function () {
+                if (this.checked) {
+                    moveCompletedTask(listItem);
+                } else {
+                    moveTodoTask(listItem);
+                }
+            });
+            listItem.appendChild(checkbox);
+
+            var span = document.createElement("span");
+            span.innerText = task;
+            listItem.appendChild(span);
+
+            var deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.addEventListener("click", function () {
+                deleteTask(listItem);
+            });
+            listItem.appendChild(deleteButton);
+
+            var todoList = document.getElementById("todoList");
+            todoList.appendChild(listItem);
+
+            input.value = "";
+        }
+
+
+        function moveCompletedTask(taskItem) {
+            var todoList = document.getElementById("todoList");
+            var completedList = document.getElementById("completedList");
+            todoList.removeChild(taskItem);
+            completedList.appendChild(taskItem);
+        }
+
+        function moveTodoTask(taskItem) {
+            var todoList = document.getElementById("todoList");
+            var completedList = document.getElementById("completedList");
+            completedList.removeChild(taskItem);
+            todoList.appendChild(taskItem);
+        }
+
+        function deleteTask(taskItem) {
+            taskItem.parentNode.removeChild(taskItem);
+        }
+    </script>
+</body>
+
+</html>
